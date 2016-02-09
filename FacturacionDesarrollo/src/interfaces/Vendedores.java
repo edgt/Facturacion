@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Vendedores extends javax.swing.JFrame {
+public class Vendedores extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Vendedores

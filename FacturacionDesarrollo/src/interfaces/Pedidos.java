@@ -22,15 +22,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Pedidos extends javax.swing.JFrame {
+public class Pedidos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Pedidos
      */
     public Pedidos() {
         initComponents();
-        txtNumero.setEnabled(false);
-        cargarTabla("1");
+        cargarTabla();
         bodeguerosNombre();
         vendedorNombre();
         tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -47,7 +46,7 @@ public class Pedidos extends javax.swing.JFrame {
                     txtTotal.setText(String.valueOf(tblDatos.getValueAt(fila, 3)));
                     txtObservacion.setText(String.valueOf(tblDatos.getValueAt(fila, 4)));
                     cbBodeguero.setSelectedItem(bodeguerosNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 5))));
-                    cbVendedor.setSelectedItem(bodeguerosNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 6))));
+                    cbVendedor.setSelectedItem(vendedorNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 6))));
                 }
             }
         });
@@ -56,6 +55,24 @@ public class Pedidos extends javax.swing.JFrame {
         bloquearbotones();
     }
     
+    
+    public int cargarNumero(){
+        conexion cc= new conexion();
+        Connection cn=(Connection) cc.conectar();
+        String sql="";
+        int valor=1;
+        sql="SELECT MAX(num_ped) FROM pedido";
+        try{
+           Statement psd=(Statement) cn.createStatement();
+            ResultSet rs=psd.executeQuery(sql);
+            if(rs.next()){
+                valor=rs.getInt("max")+1;
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT "+e);
+        }
+        return valor;        
+    }
     public String fechaTabla(String fecha){
     return String.valueOf(String.valueOf((fecha.charAt(8))+String.valueOf(fecha.charAt(9)))+"/"
                         +(String.valueOf(fecha.charAt(5))+String.valueOf(fecha.charAt(6)))+"/"
@@ -72,7 +89,34 @@ public class Pedidos extends javax.swing.JFrame {
     Connection cn=(Connection) cc.conectar();
     modelo=new DefaultTableModel(null, titulos);
     String sql="";
-    sql="SELECT*FROM PEDIDO WHERE NUM_PED >='"+codigo+"'";
+    sql="SELECT*FROM PEDIDO WHERE NUM_PED ='"+codigo+"'";
+    try{
+        Statement psd=(Statement) cn.createStatement();
+        ResultSet rs=psd.executeQuery(sql);
+        while(rs.next()){
+            Registros[0]=rs.getString("num_ped");
+            Registros[1]=rs.getString("fec_rea");
+            Registros[2]=rs.getString("fec_ent");
+            Registros[3]=rs.getString("total");
+            Registros[4]=rs.getString("obs");
+            Registros[5]=rs.getString("ci_bod");
+            Registros[6]=rs.getString("ci_ven");
+            modelo.addRow(Registros);
+            tblDatos.setModel(modelo);
+        }
+    }catch(Exception e){
+        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+    }
+    }
+    
+    public void cargarTabla(){
+    String titulos[]={"NUMERO","FEC REA","FEC ENT","TOTAL","OBSERVACION","BODEGUERO","VENDEDOR"};
+    String[] Registros=new String[7];
+    conexion cc= new conexion();
+    Connection cn=(Connection) cc.conectar();
+    modelo=new DefaultTableModel(null, titulos);
+    String sql="";
+    sql="SELECT*FROM PEDIDO WHERE";
     try{
         Statement psd=(Statement) cn.createStatement();
         ResultSet rs=psd.executeQuery(sql);
@@ -208,21 +252,14 @@ public class Pedidos extends javax.swing.JFrame {
         ci_bod=bodeguerosCodigo(cbBodeguero.getSelectedItem().toString());
         ci_ven=vendedorCodigo(cbVendedor.getSelectedItem().toString());
         
-        String sql="INSERT INTO PEDIDO VALUES(?,?,?,?,?,?,?)";
+        String sql="INSERT INTO PEDIDO VALUES("+numero+",'"+fec_rea+"','" +fec_ent+ "',"+total+",'"+obs+"','"+ci_bod+"','"+ci_ven+"')";
         
        try {
             PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            psd.setInt(1,numero);
-            psd.setString(2,fec_rea);
-            psd.setString(3,fec_ent);
-            psd.setInt(4,total);
-            psd.setString(5,obs);
-            psd.setString(6,ci_bod);
-            psd.setString(7,ci_ven);
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
-                cargarTabla("");
+                cargarTabla();
             }           
         } 
        catch (Exception ex) {
@@ -254,7 +291,7 @@ public class Pedidos extends javax.swing.JFrame {
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
-                cargarTabla("");
+                cargarTabla();
             }
       }catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex); 
@@ -277,6 +314,7 @@ public class Pedidos extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -297,7 +335,7 @@ public class Pedidos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -341,6 +379,13 @@ public class Pedidos extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Detalles Pedido");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -355,6 +400,10 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(43, 43, 43))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jButton1)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +420,8 @@ public class Pedidos extends javax.swing.JFrame {
                 .addComponent(btnBorrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jButton1))
         );
 
         jLabel3.setText("Fecha realizacion");
@@ -438,7 +488,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -550,7 +600,7 @@ public class Pedidos extends javax.swing.JFrame {
             if (n>0){
                 JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
                 limpiar();
-                cargarTabla("");
+                cargarTabla();
                 bloquearbotones();
             }
         } catch (SQLException ex) {
@@ -566,6 +616,13 @@ public class Pedidos extends javax.swing.JFrame {
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         cargarTabla(txtBuscar.getText());
     }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Detalle_pedido d=new Detalle_pedido();
+        Menu.jDesktopPane1.add(d);
+        d.setVisible(true);
+        d.show();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -610,6 +667,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox cbBodeguero;
     private javax.swing.JComboBox cbVendedor;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -662,6 +720,7 @@ public void limpiar()
     private void desbloquear ()
     {
         txtNumero.setEnabled(true);
+        txtNumero.setText(String.valueOf(cargarNumero()));
         jdcFec_ent.setEnabled(true);
         jdcFec_rea.setEnabled(true);
         txtTotal.setEnabled(true);

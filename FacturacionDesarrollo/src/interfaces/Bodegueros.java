@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Bodegueros extends javax.swing.JFrame {
+public class Bodegueros extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Bodegueros

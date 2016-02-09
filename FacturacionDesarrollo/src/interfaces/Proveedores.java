@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Proveedores extends javax.swing.JFrame {
+public class Proveedores extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Proveedores
