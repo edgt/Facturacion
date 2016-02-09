@@ -234,6 +234,12 @@ public class Bodegueros extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Telefono");
 
+        cbSuper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSuperActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Supervisor");
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -499,6 +505,10 @@ public class Bodegueros extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void cbSuperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSuperActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -569,7 +579,7 @@ public void limpiar()
         txtTelefono.setText("");
         txtDireccion.setText("");
         txtSueldo.setText("");
-        cbSuper.setSelectedIndex(0);
+        cbSuper.setSelectedItem(0);
     }
     
     private void bloquear()
