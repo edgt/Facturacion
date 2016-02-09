@@ -116,7 +116,7 @@ public class Pedidos extends javax.swing.JInternalFrame {
     Connection cn=(Connection) cc.conectar();
     modelo=new DefaultTableModel(null, titulos);
     String sql="";
-    sql="SELECT*FROM PEDIDO WHERE";
+    sql="SELECT*FROM PEDIDO";
     try{
         Statement psd=(Statement) cn.createStatement();
         ResultSet rs=psd.executeQuery(sql);
