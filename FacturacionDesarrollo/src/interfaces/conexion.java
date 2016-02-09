@@ -21,7 +21,7 @@ public class conexion {
         String password = "root";
         try {
             Class.forName("org.postgresql.Driver");
-            conec = DriverManager.getConnection(url, "postgres", password);
+            conec = DriverManager.getConnection(url, "postgres", "root");
             System.out.print("Ingreso");
            // JOptionPane.showMessageDialog(null, "Conexión Exitosa ");
         } catch (Exception e) {
