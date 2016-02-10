@@ -19,10 +19,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Bodegueros extends javax.swing.JInternalFrame{
+public class Bodegueros extends javax.swing.JFrame{
 
     /**
-     * Creates new form Bodegueros
+     * Creates new form Bodegueros    JInternalFrame
      */
     public Bodegueros() {
         initComponents();
@@ -290,7 +290,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Codigo");
+        jLabel1.setText("Cedula");
 
         txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
