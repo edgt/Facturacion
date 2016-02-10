@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Pedidos extends javax.swing.JInternalFrame {
+public class Pedidos extends javax.swing.JFrame {
 
     /**
      * Creates new form Pedidos
