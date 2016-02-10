@@ -231,7 +231,26 @@ public class Bodegueros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex); 
       }
     }
-
+    public void Mayusculas(java.awt.event.KeyEvent evt) {
+        if (Character.isLowerCase(evt.getKeyChar())) {
+            char a = evt.getKeyChar();
+            evt.setKeyChar(Character.toUpperCase(a));
+        }
+    }
+    public void ControlLetras(java.awt.event.KeyEvent evt) {
+        if (!Character.isLetter(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }
+      public void ControlNumeros(java.awt.event.KeyEvent evt) {
+        if (txtTelefono.getText().length() < 10) {
+            if (!Character.isDigit(evt.getKeyChar())) {
+                evt.consume();
+            }
+        } else {
+            evt.consume();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -273,11 +292,40 @@ public class Bodegueros extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Codigo");
 
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Nombre");
 
         jLabel4.setText("Apellido");
 
         jLabel8.setText("Telefono");
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNombreKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        Apellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ApellidoActionPerformed(evt);
+            }
+        });
+        Apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ApellidoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ApellidoKeyTyped(evt);
+            }
+        });
 
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -609,6 +657,32 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
      evt.consume();
  }        // TODO add your handling code here:
     }//GEN-LAST:event_txtSueldoKeyTyped
+
+    private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
+       
+    }//GEN-LAST:event_txtNombreKeyPressed
+
+    private void ApellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApellidoKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ApellidoKeyPressed
+
+    private void ApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ApellidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ApellidoActionPerformed
+
+    private void ApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApellidoKeyTyped
+        ControlLetras(evt);
+        Mayusculas(evt);
+    }//GEN-LAST:event_ApellidoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        ControlLetras(evt);
+        Mayusculas(evt);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        ControlNumeros(evt);
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
     /**
      * @param args the command line arguments
