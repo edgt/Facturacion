@@ -649,8 +649,8 @@ public void limpiar()
         txtNumero.setText("");
         ((JTextField)jdcFec_rea.getDateEditor().getUiComponent()).setText("");
         txtTotal.setText("");
-        cbCliente.setSelectedIndex(0);
-        cbCajero.setSelectedIndex(0);
+//        cbCliente.setSelectedIndex(0);
+//        cbCajero.setSelectedIndex(0);
     }
     
     private void bloquear()

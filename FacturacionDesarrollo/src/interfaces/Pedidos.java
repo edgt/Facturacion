@@ -691,8 +691,8 @@ public void limpiar()
         ((JTextField)jdcFec_rea.getDateEditor().getUiComponent()).setText("");
         txtTotal.setText("");
         txtObservacion.setText("");
-        cbBodeguero.setSelectedIndex(0);
-        cbVendedor.setSelectedIndex(0);
+//        cbBodeguero.setSelectedIndex(0);
+//        cbVendedor.setSelectedIndex(0);
     }
     
     private void bloquear()
