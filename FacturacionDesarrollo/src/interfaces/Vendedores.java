@@ -481,7 +481,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
-        }
+        } 
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
