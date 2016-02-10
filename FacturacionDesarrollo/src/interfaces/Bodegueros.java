@@ -78,6 +78,49 @@ public class Bodegueros extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
     }
     }
+// public void Modificar() {
+//        conexion cc = new conexion();
+//        Connection cn = cc.conectar();
+//        String sql = "";
+//        String    CI_BOD,NOM_BOD,APE_BOD, DIR_BOD,TEL_BOD, SUE_BOD, CI_SUP ;
+// }
+    
+
+    public void Actualizar() {
+         String CI_BOD,NOM_BOD,APE_BOD, DIR_BOD,TEL_BOD, SUE_BOD, CI_SUP ;
+        conexion cc = new conexion();
+        Connection cn = cc.conectar();
+        String sql = "";
+        
+        CI_BOD = txtCodigo.getText();
+          NOM_BOD =txtNombre.getText();
+           APE_BOD =Apellido.getText();
+           DIR_BOD = txtDireccion.getText();
+           TEL_BOD =txtTelefono.getText();
+           SUE_BOD = txtSueldo.getText();
+           CI_SUP=String.valueOf(cbSuper.getSelectedItem());
+       
+            sql = "update  viajes set  NOM_BOD='" + txtNombre.getText()
+                +"',APE_BOD='" + APE_BOD
+                 +"',DIR_BOD='" +  DIR_BOD
+                 +"',TEL_BOD='" + TEL_BOD
+                 +"',SUE_BOD='" + SUE_BOD
+                 +"',CI_SUP='" + CI_SUP
+                            
+                +"'where CI_BOD='" + txtCodigo.getText() + "'";
+
+        try {
+            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            int i = psd.executeUpdate();
+            if (i > 0) {
+                JOptionPane.showMessageDialog(null, "correctamente ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla(sql);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }
 
     public String bodeguerosCodigo(String codigo){
         conexion cc= new conexion();
@@ -347,6 +390,11 @@ public class Bodegueros extends javax.swing.JInternalFrame {
                 btnNuevoActionPerformed(evt);
             }
         });
+        btnNuevo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevoKeyPressed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -508,6 +556,10 @@ public class Bodegueros extends javax.swing.JInternalFrame {
     private void cbSuperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbSuperActionPerformed
+
+    private void btnNuevoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoKeyPressed
+
+    }//GEN-LAST:event_btnNuevoKeyPressed
 
     /**
      * @param args the command line arguments
