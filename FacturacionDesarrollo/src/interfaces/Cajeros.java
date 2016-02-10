@@ -427,7 +427,8 @@ public class Cajeros extends javax.swing.JInternalFrame {
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
-        jLabel7.setText("FORMULARIO CAJERO");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jLabel7.setText("FORMULARIO CAJEROS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
