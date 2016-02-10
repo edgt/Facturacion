@@ -294,6 +294,12 @@ public class Cajeros extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Sueldo");
 
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -574,6 +580,10 @@ public class Cajeros extends javax.swing.JInternalFrame {
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         ControlNumeros(evt);
     }//GEN-LAST:event_txtCodigoKeyTyped
+
+    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
+        Mayusculas(evt);
+    }//GEN-LAST:event_txtDireccionKeyTyped
 
     /**
      * @param args the command line arguments
