@@ -31,13 +31,14 @@ public class Proveedores extends javax.swing.JInternalFrame {
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
                 desbloquear();
-                btnBorrar.setEnabled(true);
-                if (tblDatos.getSelectedRow()!=-1){
-                    int fila=tblDatos.getSelectedRow();
+                btnCancelar.setEnabled(true);                
+                 btnBorrar.setEnabled(true);
+                if (tblDatos.getSelectedRow() != -1) {
+                    int fila = tblDatos.getSelectedRow();
                     txtCodigo.setText(String.valueOf(tblDatos.getValueAt(fila, 0)));
                     txtNombre.setText(String.valueOf(tblDatos.getValueAt(fila, 1)));
                     txtDireccion.setText(String.valueOf(tblDatos.getValueAt(fila, 2)));
-                    txtTelefono.setText(String.valueOf(tblDatos.getValueAt(fila, 3)));                    
+                    txtTelefono.setText(String.valueOf(tblDatos.getValueAt(fila, 3)));
                 }
             }
         });
@@ -45,80 +46,101 @@ public class Proveedores extends javax.swing.JInternalFrame {
         limpiar();
         bloquearbotones();
     }
-    
+
     DefaultTableModel modelo;
-    
-    public void cargarTabla(String codigo){
-    String titulos[]={"CODIGO","NOMBRE","DIRECCION","TELEFONO"};
-    String[] Registros=new String[4];
-    conexion cc= new conexion();
-    Connection cn=(Connection) cc.conectar();
-    modelo=new DefaultTableModel(null, titulos);
-    String sql="";
-    sql="SELECT*FROM PROVEEDORES WHERE COD_PROV LIKE ('%"+codigo+"%') ";
-    try{
-        Statement psd=(Statement) cn.createStatement();
-        ResultSet rs=psd.executeQuery(sql);
-        while(rs.next()){
-            Registros[0]=rs.getString("cod_prov");
-            Registros[1]=rs.getString("nom_prov");
-            Registros[2]=rs.getString("dir_prov");
-            Registros[3]=rs.getString("tel_prov");
-            modelo.addRow(Registros);
-            tblDatos.setModel(modelo);
+
+    public void cargarTabla(String codigo) {
+        String titulos[] = {"CODIGO", "NOMBRE", "DIRECCION", "TELEFONO"};
+        String[] Registros = new String[4];
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        modelo = new DefaultTableModel(null, titulos);
+        String sql = "";
+        sql = "SELECT * FROM PROVEEDORES WHERE COD_PROV LIKE ('%" + codigo + "%') ";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                Registros[0] = rs.getString("cod_prov");
+                Registros[1] = rs.getString("nom_prov");
+                Registros[2] = rs.getString("dir_prov");
+                Registros[3] = rs.getString("tel_prov");
+                modelo.addRow(Registros);
+                tblDatos.setModel(modelo);
+            }
+           tblDatos.setModel(modelo); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-    }
     }
 
-    public void guardar(){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String codigo,nombre,direccion,telefono;
-        
-        codigo=txtCodigo.getText().toUpperCase();
-        nombre=txtNombre.getText().toUpperCase();
-        direccion=txtDireccion.getText().toUpperCase();
-        telefono=txtTelefono.getText().toUpperCase();
-        
-        String sql="INSERT INTO PROVEEDORES VALUES(?,?,?,?)";
-        
-       try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            psd.setString(1,codigo);
-            psd.setString(2,nombre);
-            psd.setString(3,direccion);
-            psd.setString(4,telefono);
-            int n=psd.executeUpdate();
-            if(n>0){
-                JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
+    public void guardar() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String codigo, nombre, direccion, telefono;
+
+        codigo = txtCodigo.getText().toUpperCase();
+        nombre = txtNombre.getText().toUpperCase();
+        direccion = txtDireccion.getText().toUpperCase();
+        telefono = txtTelefono.getText().toUpperCase();
+
+        String sql = "INSERT INTO PROVEEDORES VALUES(?,?,?,?)";
+
+        try {
+            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            psd.setString(1, codigo);
+            psd.setString(2, nombre);
+            psd.setString(3, direccion);
+            psd.setString(4, telefono);
+            int n = psd.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "Se inserto correctamente ");
                 cargarTabla("");
-            }           
-        } 
-       catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "No se puede insertar la información"+ex);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se puede insertar la información" + ex);
         }
     }
-    
-    public void modificar(){
-        conexion cc=new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="UPDATE PROVEEDORES SET dir_prov='"+txtDireccion.getText().toUpperCase()+"', "
-                            + "nom_prov='"+txtNombre.getText().toUpperCase()+"', "
-                            + "tel_prov='"+txtTelefono.getText()+"' "
-                +"WHERE cod_prov='"+txtCodigo.getText()+"'";    
+
+    public void modificar() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "UPDATE PROVEEDORES SET dir_prov='" + txtDireccion.getText().toUpperCase() + "', "
+                + "nom_prov='" + txtNombre.getText().toUpperCase() + "', "
+                + "tel_prov='" + txtTelefono.getText() + "' "
+                + "WHERE cod_prov='" + txtCodigo.getText() + "'";
         try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);     
-            int n=psd.executeUpdate();
-            if(n>0){
+            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            int n = psd.executeUpdate();
+            if (n > 0) {
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                 cargarTabla("");
             }
-      }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, ex); 
-      }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    public void ControlNumeros(java.awt.event.KeyEvent evt) {
+        if (txtTelefono.getText().length() < 10) {
+            if (!Character.isDigit(evt.getKeyChar())) {
+                evt.consume();
+            }
+        } else {
+            evt.consume();
+        }
+    }
+
+    public void ControlLetras(java.awt.event.KeyEvent evt) {
+        if (!Character.isLetter(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }
+public void Mayusculas(java.awt.event.KeyEvent evt) {
+        if (Character.isLowerCase(evt.getKeyChar())) {
+            char a = evt.getKeyChar();
+            evt.setKeyChar(Character.toUpperCase(a));
+        }
     }
 
     /**
@@ -130,6 +152,8 @@ public class Proveedores extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblDatos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
@@ -141,8 +165,6 @@ public class Proveedores extends javax.swing.JInternalFrame {
         txtTelefono = new javax.swing.JTextField();
         txtBuscar = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblDatos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -151,7 +173,17 @@ public class Proveedores extends javax.swing.JInternalFrame {
         btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblDatos);
 
         jLabel1.setText("Codigo");
 
@@ -160,6 +192,24 @@ public class Proveedores extends javax.swing.JInternalFrame {
         jLabel4.setText("Direccion");
 
         jLabel8.setText("Telefono");
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyTyped(evt);
+            }
+        });
+
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -173,34 +223,28 @@ public class Proveedores extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(137, 137, 137)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(115, 115, 115))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel8))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                            .addComponent(txtDireccion)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTelefono))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(105, 105, 105)))
-                .addContainerGap())
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                            .addComponent(txtNombre))))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,9 +258,9 @@ public class Proveedores extends javax.swing.JInternalFrame {
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -227,16 +271,6 @@ public class Proveedores extends javax.swing.JInternalFrame {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
-
-        tblDatos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(tblDatos);
 
         btnNuevo.setText("     Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -318,9 +352,9 @@ public class Proveedores extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -342,10 +376,12 @@ public class Proveedores extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        conexion op = new conexion();
-        op.conectar();
+//        conexion op = new conexion();
+//        op.conectar();
         desbloquear();
         desbloquearbotones();
+        btnActualizar.setEnabled(false);
+        btnNuevo.setEnabled(false);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -360,29 +396,31 @@ public class Proveedores extends javax.swing.JInternalFrame {
         bloquearbotones();
         limpiar();
         bloquear();
+        btnNuevo.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn=(Connection) cc.conectar();
-            String sql="";
-            sql="DELETE FROM PROVEEDORES WHERE cod_prov='"+txtCodigo.getText()+"'";
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla("");
-                bloquearbotones();
+                "¿Esta seguro que desea eliminar este registro?", "ELIMINAR", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                conexion cc = new conexion();
+                Connection cn = (Connection) cc.conectar();
+                String sql = "";
+                sql = "DELETE FROM PROVEEDORES WHERE cod_prov='" + txtCodigo.getText() + "'";
+                PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+                int n = psd.executeUpdate();
+                if (n > 0) {
+                    JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
+                    limpiar();
+                    cargarTabla("");
+                    bloquearbotones();
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
+    
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
@@ -391,6 +429,19 @@ public class Proveedores extends javax.swing.JInternalFrame {
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         cargarTabla(txtBuscar.getText());
     }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        ControlNumeros(evt);
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        ControlLetras(evt);
+         Mayusculas(evt);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
+       Mayusculas(evt);
+    }//GEN-LAST:event_txtDireccionKeyTyped
 
     /**
      * @param args the command line arguments
@@ -448,49 +499,44 @@ public class Proveedores extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
-public void limpiar()
-    {
+public void limpiar() {
         txtCodigo.setText("");
         txtNombre.setText("");
         txtDireccion.setText("");
         txtTelefono.setText("");
     }
-    
-    private void bloquear()
-    {
+
+    private void bloquear() {
         txtCodigo.setEnabled(false);
         txtNombre.setEnabled(false);
         txtDireccion.setEnabled(false);
         txtTelefono.setEnabled(false);
     }
-    
-    private void bloquearbotones()
-    {
+
+    private void bloquearbotones() {
         btnActualizar.setEnabled(false);
         btnBorrar.setEnabled(false);
         btnCancelar.setEnabled(false);
-        btnGuardar.setEnabled(false);       
+        btnGuardar.setEnabled(false);
     }
-    
-    private void desbloquear ()
-    {
+
+    private void desbloquear() {
         txtCodigo.setEnabled(true);
         txtNombre.setEnabled(true);
         txtDireccion.setEnabled(true);
         txtTelefono.setEnabled(true);
     }
-    private void desbloquearbotones()
-    {
+
+    private void desbloquearbotones() {
         btnActualizar.setEnabled(true);
         btnBorrar.setEnabled(true);
         btnCancelar.setEnabled(true);
-        btnGuardar.setEnabled(true);       
+        btnGuardar.setEnabled(true);
     }
-    
-    private void desbloquearbotonesActualizar()
-    {
+
+    private void desbloquearbotonesActualizar() {
         btnNuevo.setEnabled(true);
         btnActualizar.setEnabled(true);
-        
+
     }
 }
