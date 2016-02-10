@@ -188,6 +188,26 @@ public class Cajeros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex); 
       }
     }
+      public void Mayusculas(java.awt.event.KeyEvent evt) {
+        if (Character.isLowerCase(evt.getKeyChar())) {
+            char a = evt.getKeyChar();
+            evt.setKeyChar(Character.toUpperCase(a));
+        }
+    }
+    public void ControlLetras(java.awt.event.KeyEvent evt) {
+        if (!Character.isLetter(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }
+      public void ControlNumeros(java.awt.event.KeyEvent evt) {
+        if (txtTelefono.getText().length() < 10) {
+            if (!Character.isDigit(evt.getKeyChar())) {
+                evt.consume();
+            }
+        } else {
+            evt.consume();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -230,11 +250,29 @@ public class Cajeros extends javax.swing.JInternalFrame {
 
         jLabel1.setText("CI");
 
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Nombre");
 
         jLabel4.setText("Apellido");
 
         jLabel8.setText("Telefono");
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        Apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ApellidoKeyTyped(evt);
+            }
+        });
 
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -324,11 +362,15 @@ public class Cajeros extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8)
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -516,12 +558,22 @@ public class Cajeros extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
-if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()))
-{
-     Toolkit.getDefaultToolkit().beep();
-     evt.consume();
- }        // TODO add your handling code here:
+        ControlNumeros(evt);      // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        ControlLetras(evt);
+        Mayusculas(evt);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void ApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApellidoKeyTyped
+        ControlLetras(evt);
+        Mayusculas(evt);
+    }//GEN-LAST:event_ApellidoKeyTyped
+
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        ControlNumeros(evt);
+    }//GEN-LAST:event_txtCodigoKeyTyped
 
     /**
      * @param args the command line arguments
