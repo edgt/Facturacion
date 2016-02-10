@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Bodegueros extends javax.swing.JFrame{
+public class Bodegueros extends javax.swing.JInternalFrame{
 
     /**
      * Creates new form Bodegueros    JInternalFrame
@@ -352,6 +352,12 @@ public class Bodegueros extends javax.swing.JFrame{
         jLabel5.setText("Direccion");
 
         jLabel6.setText("Sueldo");
+
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyTyped(evt);
+            }
+        });
 
         txtSueldo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -686,6 +692,10 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         ControlNumeros(evt);
     }//GEN-LAST:event_txtCodigoKeyTyped
+
+    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
+        Mayusculas(evt);        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDireccionKeyTyped
 
     /**
      * @param args the command line arguments
