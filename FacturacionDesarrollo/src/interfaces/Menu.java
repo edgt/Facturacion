@@ -5,18 +5,8 @@
 package interfaces;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JInternalFrame;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.swing.JRViewer;
+
+
 
 /**
  *
@@ -27,18 +17,19 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    public Menu() { 
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
     }
-    Bodegueros b=new Bodegueros();
-    Cajeros caj=new Cajeros();
-    Clientes cli=new Clientes();
-    Pedidos ped=new Pedidos();
-    Productos pro=new Productos();
-    Proveedores prov=new Proveedores();
-    Vendedores ven=new Vendedores();
-    Ventas vent=new Ventas();
+    Bodegueros b = new Bodegueros();
+    Cajeros caj = new Cajeros();
+    Clientes cli = new Clientes();
+    Pedidos ped = new Pedidos();
+    Productos pro = new Productos();
+    Proveedores prov = new Proveedores();
+    Vendedores ven = new Vendedores();
+    Ventas vent = new Ventas();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,10 +50,6 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,34 +122,6 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu3.setText("Reportes");
-
-        jMenuItem9.setText("Productos");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem9);
-
-        jMenuItem10.setText("Ventas");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem10);
-
-        jMenuItem11.setText("Pedidos");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem11);
-
-        jMenuBar1.add(jMenu3);
-
         jMenu2.setText("Salir");
         jMenuBar1.add(jMenu2);
 
@@ -183,95 +142,68 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if (!b.isShowing())
+        if (!b.isShowing()) {
             jDesktopPane1.add(b);
-            b.setVisible(true);
-            b.show();
+        }
+        b.setVisible(true);
+        b.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if (!caj.isShowing())
+        if (!caj.isShowing()) {
             jDesktopPane1.add(caj);
-            caj.setVisible(true);
-            caj.show();
+        }
+        caj.setVisible(true);
+        caj.show();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        if (!cli.isShowing())
+        if (!cli.isShowing()) {
             jDesktopPane1.add(cli);
-            cli.setVisible(true);
-            cli.show();
+        }
+        cli.setVisible(true);
+        cli.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if (!ped.isShowing())
+        if (!ped.isShowing()) {
             jDesktopPane1.add(ped);
-            ped.setVisible(true);
-            ped.show();
+        }
+        ped.setVisible(true);
+        ped.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        if (!pro.isShowing())
+        if (!pro.isShowing()) {
             jDesktopPane1.add(pro);
-            pro.setVisible(true);
-            pro.show();
+        }
+        pro.setVisible(true);
+        pro.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        if (!prov.isShowing())
+        if (!prov.isShowing()) {
             jDesktopPane1.add(prov);
-            prov.setVisible(true);
-            prov.show();
+        }
+        prov.setVisible(true);
+        prov.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        if (!ven.isShowing())
+        if (!ven.isShowing()) {
             jDesktopPane1.add(ven);
-            ven.setVisible(true);
-            ven.show();
+        }
+        ven.setVisible(true);
+        ven.show();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        if (!vent.isShowing())
+        if (!vent.isShowing()) {
             jDesktopPane1.add(vent);
-            vent.setVisible(true);
-            vent.show();
+        }
+        vent.setVisible(true);
+        vent.show();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
-
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-         try {
-        conexion cc=new conexion();
-                    Connection cn=  cc.conectar();
-        Map parametros=  new HashMap();
-                    parametros.put("marca","1");                    
-                     parametros.put("color","1");     
-        JasperReport reporte;
-       
-            reporte = JasperCompileManager.compileReport("C:/Reportes/Pedidos.jrxml");
-       
-            
-        
-            JasperPrint imprimir=JasperFillManager.fillReport(reporte, parametros, cn);
-            //JasperViewer.viewReport(imprimir,false);
-            JRViewer ver=new JRViewer(imprimir);
-            JInternalFrame visualizar=new JInternalFrame("Reporte");
-            visualizar.getContentPane().add(ver);
-            visualizar.setClosable(true);
-            jDesktopPane1.add(visualizar);
-             } catch (JRException ex) {
-                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-             }
-    
-            
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -311,11 +243,8 @@ public class Menu extends javax.swing.JFrame {
     public static javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -323,6 +252,5 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }
