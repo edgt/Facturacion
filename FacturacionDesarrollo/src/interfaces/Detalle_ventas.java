@@ -33,7 +33,6 @@ public class Detalle_ventas extends javax.swing.JInternalFrame {
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
                 desbloquear();
-                btnBorrar.setEnabled(true);
                 if (tblDatos.getSelectedRow()!=-1){
                     int fila=tblDatos.getSelectedRow();
                     cbNumero.setSelectedItem(String.valueOf(tblDatos.getValueAt(fila, 0)));
