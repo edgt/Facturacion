@@ -286,11 +286,11 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("ADMINISTRACIÓN BODEGUEROS");
 
-        jLabel1.setText("Cedula");
+        jLabel1.setText("Cédula:");
 
         txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -298,11 +298,11 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
-        jLabel3.setText("Nombre");
+        jLabel3.setText("Nombre:");
 
-        jLabel4.setText("Apellido");
+        jLabel4.setText("Apellido:");
 
-        jLabel8.setText("Telefono");
+        jLabel8.setText("Teléfono:");
 
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -339,7 +339,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
-        jLabel2.setText("Supervisor");
+        jLabel2.setText("Supervisor:");
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -349,9 +349,9 @@ public class Bodegueros extends javax.swing.JInternalFrame{
 
         jLabel9.setText("Buscar");
 
-        jLabel5.setText("Direccion");
+        jLabel5.setText("Direccion:");
 
-        jLabel6.setText("Sueldo");
+        jLabel6.setText("Sueldo:");
 
         txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -549,16 +549,13 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         ));
         jScrollPane1.setViewportView(tblDatos);
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        jLabel7.setText("FORMULARIO BODEGUEROS");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -566,16 +563,11 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -746,7 +738,6 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
