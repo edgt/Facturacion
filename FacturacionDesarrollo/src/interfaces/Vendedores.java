@@ -26,13 +26,13 @@ public class Vendedores extends javax.swing.JInternalFrame {
     public Vendedores() {
         initComponents();
         cargarTabla("");
-        proveedorNombre();
+        VendedoresNombre();
         tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
                 desbloquear();
-                btnBorrar.setEnabled(true);
+               
                 btnCancelar.setEnabled(true);
                 if (tblDatos.getSelectedRow()!=-1){
                     int fila=tblDatos.getSelectedRow();
@@ -52,7 +52,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
     DefaultTableModel modelo;
     
     public void cargarTabla(String codigo){
-    String titulos[]={"CODIGO","NOMBRE","APELLIDO","TELEFONO","PROVEEDOR"};
+    String titulos[]={"CODIGO", "NOMBRE" , "APELLIDO" , "TELEFONO" , "PROVEEDOR" };
     String[] Registros=new String[5];
     conexion cc= new conexion();
     Connection cn=(Connection) cc.conectar();
@@ -77,7 +77,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
     }
     }
 
-    public String proveedorCodigo(String codigo){
+    public String VendedoresCodigo(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
         String sql="";
@@ -94,7 +94,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
         return "";
     }
     
-    public String proveedorNombre(){
+    public String VendedoresNombre(){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
         String sql="";
@@ -120,7 +120,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
         nombre=txtNombre.getText().toUpperCase();
         apellido=Apellido.getText().toUpperCase();
         telefono=txtTelefono.getText().toUpperCase();
-        prov=proveedorCodigo(cbProveedor.getSelectedItem().toString());
+        prov=VendedoresCodigo(cbProveedor.getSelectedItem().toString());
         String sql="INSERT INTO VENDEDORES VALUES(?,?,?,?,?)";
         
        try {
@@ -148,7 +148,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
         sql="UPDATE VENDEDORES SET ape_ven='"+Apellido.getText().toUpperCase()+"', "
                             + "nom_ven='"+txtNombre.getText().toUpperCase()+"', "
                             + "tel_ven='"+txtTelefono.getText()+"', "
-                            + "cod_prov='"+proveedorCodigo(cbProveedor.getSelectedItem().toString())+"' "
+                            + "cod_prov='"+VendedoresCodigo(cbProveedor.getSelectedItem().toString())+"' "
                 +"WHERE ci_ven='"+txtCodigo.getText()+"'";    
         try {
             PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);     
@@ -212,12 +212,12 @@ public class Vendedores extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("ADMINISTRACION VENDEDORES");
 
         jLabel1.setText("CEDULA");
 
@@ -273,11 +273,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 187, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -292,6 +288,12 @@ public class Vendedores extends javax.swing.JInternalFrame {
                             .addComponent(Apellido)
                             .addComponent(txtTelefono))))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,13 +318,14 @@ public class Vendedores extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(49, 49, 49))
         );
 
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435812_add_cross_new_plus_create.png"))); // NOI18N
         btnNuevo.setText("     Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,6 +333,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             }
         });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435968_editor-floopy-dish-save-glyph.png"))); // NOI18N
         btnGuardar.setText("    Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,6 +341,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             }
         });
 
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435952_update.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -344,6 +349,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435988_close_square_black.png"))); // NOI18N
         btnCancelar.setText("   Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -351,13 +357,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             }
         });
 
-        btnBorrar.setText("       Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
-
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448436039_sign-out.png"))); // NOI18N
         btnSalir.setText("        Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -374,7 +374,6 @@ public class Vendedores extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -387,15 +386,13 @@ public class Vendedores extends javax.swing.JInternalFrame {
                 .addComponent(btnNuevo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalir)
-                .addGap(21, 21, 21))
+                .addGap(45, 45, 45))
         );
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
@@ -426,10 +423,10 @@ public class Vendedores extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
 
@@ -462,28 +459,6 @@ public class Vendedores extends javax.swing.JInternalFrame {
         limpiar();
         bloquear();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn=(Connection) cc.conectar();
-            String sql="";
-            sql="DELETE FROM VENDEDORES WHERE ci_ven='"+txtCodigo.getText()+"'";
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla("");
-                bloquearbotones();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        } 
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
@@ -548,7 +523,6 @@ public class Vendedores extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Apellido;
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
@@ -589,7 +563,7 @@ public void limpiar()
     private void bloquearbotones()
     {
         btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
+        
         btnCancelar.setEnabled(false);
         btnGuardar.setEnabled(false);       
     }
@@ -605,7 +579,6 @@ public void limpiar()
     private void desbloquearbotones()
     {
         btnActualizar.setEnabled(true);
-        btnBorrar.setEnabled(true);
         btnCancelar.setEnabled(true);
         btnGuardar.setEnabled(true);       
     }
