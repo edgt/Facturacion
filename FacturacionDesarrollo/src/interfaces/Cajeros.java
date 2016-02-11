@@ -4,7 +4,7 @@
  */
 package interfaces;
 
-import java.awt.Toolkit;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,14 +26,13 @@ public class Cajeros extends javax.swing.JInternalFrame {
      */
     public Cajeros() {
         initComponents();
-        cargarTabla("");
+        cargarTabla();
         bodeguerosNombre();
         tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
-                desbloquear();
-                btnBorrar.setEnabled(true);
+                desbloquear();                
                 if (tblDatos.getSelectedRow()!=-1){
                     int fila=tblDatos.getSelectedRow();
                     txtCodigo.setText(String.valueOf(tblDatos.getValueAt(fila, 0)));
@@ -47,7 +46,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
         bloquear();
-//        limpiar();
+        limpiar();
         bloquearbotones();
     }
     
@@ -80,6 +79,32 @@ public class Cajeros extends javax.swing.JInternalFrame {
     }
     }
 
+    public void cargarTabla(){
+    String titulos[]={"CI","NOMBRE","APELLIDO","DIRECCION","TELEFONO","SUELDO","SUPERVISOR"};
+    String[] Registros=new String[7];
+    conexion cc= new conexion();
+    Connection cn=(Connection) cc.conectar();
+    modelo=new DefaultTableModel(null, titulos);
+    String sql="";
+    sql="SELECT*FROM CAJEROS";
+    try{
+        Statement psd=(Statement) cn.createStatement();
+        ResultSet rs=psd.executeQuery(sql);
+        while(rs.next()){
+            Registros[0]=rs.getString("ci_caj");
+            Registros[1]=rs.getString("nom_caj");
+            Registros[2]=rs.getString("ape_caj");
+            Registros[3]=rs.getString("dir_caj");
+            Registros[4]=rs.getString("tel_caj");
+            Registros[5]=rs.getString("sue_caj");
+            Registros[6]=rs.getString("ci_sup");
+            modelo.addRow(Registros);
+            tblDatos.setModel(modelo);
+        }
+    }catch(Exception e){
+        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+    }
+    }
     public String bodeguerosCodigo(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
@@ -99,8 +124,8 @@ public class Cajeros extends javax.swing.JInternalFrame {
     
     public String bodeguerosNombre(){
         conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
+        Connection cn=cc.conectar();
+        String sql;
         sql="SELECT*FROM CAJEROS";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -108,7 +133,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             while(rs.next()){
                 cbSuper.addItem(rs.getString("nom_caj"));
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
         }
         return "";
@@ -117,7 +142,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
      public String bodeguerosNombreTabla(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="SELECT*FROM CAJEROS WHERE CI_CAJ = '"+codigo+"'";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -125,7 +150,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             if(rs.next()){
                 return rs.getString("nom_caj");
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
         }
         return "";
@@ -133,7 +158,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
     
     public void guardar(){
         conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
+        Connection cn=cc.conectar();
         String codigo,nombre,apellido,telefono,direccion,sup;
         int sueldo;
         
@@ -158,10 +183,10 @@ public class Cajeros extends javax.swing.JInternalFrame {
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
-                cargarTabla("");
+                cargarTabla();
             }           
         } 
-       catch (Exception ex) {
+       catch (HeadlessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "No se puede insertar la información"+ex);
         }
     }
@@ -169,7 +194,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
     public void modificar(){
         conexion cc=new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="UPDATE CAJEROS SET ape_caj='"+Apellido.getText().toUpperCase()+"', "
                             + "nom_caj='"+txtNombre.getText().toUpperCase()+"', "
                             + "tel_caj='"+txtTelefono.getText()+"', "
@@ -184,7 +209,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                 cargarTabla("");
             }
-      }catch(Exception ex){
+      }catch(HeadlessException | SQLException ex){
             JOptionPane.showMessageDialog(null, ex); 
       }
     }
@@ -242,13 +267,12 @@ public class Cajeros extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("ADMINISTRACIÓN CAJEROS");
 
-        jLabel1.setText("CI");
+        jLabel1.setText("CI:");
 
         txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -256,11 +280,11 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setText("Nombre");
+        jLabel3.setText("Nombre:");
 
-        jLabel4.setText("Apellido");
+        jLabel4.setText("Apellido:");
 
-        jLabel8.setText("Telefono");
+        jLabel8.setText("Telefono:");
 
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -280,7 +304,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setText("Supervisor");
+        jLabel2.setText("Supervisor:");
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -290,9 +314,9 @@ public class Cajeros extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Buscar");
 
-        jLabel5.setText("Direccion");
+        jLabel5.setText("Direccion:");
 
-        jLabel6.setText("Sueldo");
+        jLabel6.setText("Sueldo:");
 
         txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -400,6 +424,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblDatos);
 
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435812_add_cross_new_plus_create.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,6 +432,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435968_editor-floopy-dish-save-glyph.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -414,6 +440,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435952_update.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -421,6 +448,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435988_close_square_black.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -428,13 +456,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             }
         });
 
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
-
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448436039_sign-out.png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -451,7 +473,6 @@ public class Cajeros extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -469,14 +490,9 @@ public class Cajeros extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        jLabel7.setText("FORMULARIO CAJEROS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -491,16 +507,11 @@ public class Cajeros extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(242, 242, 242)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -536,28 +547,6 @@ public class Cajeros extends javax.swing.JInternalFrame {
         limpiar();
         bloquear();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn=(Connection) cc.conectar();
-            String sql="";
-            sql="DELETE FROM CAJEROS WHERE ci_caj='"+txtCodigo.getText()+"'";
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla("");
-                bloquearbotones();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
@@ -622,7 +611,6 @@ public class Cajeros extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Apellido;
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
@@ -634,7 +622,6 @@ public class Cajeros extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -672,10 +659,11 @@ public void limpiar()
     
     private void bloquearbotones()
     {
-        btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
+        btnActualizar.setEnabled(false);        
         btnCancelar.setEnabled(false);
-        btnGuardar.setEnabled(false);       
+        btnGuardar.setEnabled(false);
+        btnNuevo.setEnabled(false);
+        btnSalir.setEnabled(false);
     }
     
     private void desbloquear ()
