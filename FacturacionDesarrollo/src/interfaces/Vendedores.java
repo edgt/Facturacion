@@ -80,7 +80,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
     public String VendedoresCodigo(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="SELECT*FROM PROVEEDORES WHERE NOM_PROV ='"+codigo+"'";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -97,7 +97,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
     public String VendedoresNombre(){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="SELECT*FROM PROVEEDORES";
         try{
             Statement psd=(Statement) cn.createStatement();
