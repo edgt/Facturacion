@@ -17,12 +17,11 @@ public class conexion {
     
     public Connection conectar(){
      //   String url = "jdbc:postgresql://localhost:5432/facturacion";
-       String url = "jdbc:postgresql://localhost:5432/Facturacion";
+       String url = "jdbc:postgresql://192.168.10.10:5432/Facturacion";
         String password = "root";
         try {
             Class.forName("org.postgresql.Driver");
-            conec = DriverManager.getConnection(url, "postgres", "06051rol.");
-            System.out.print("Ingreso");
+            conec = DriverManager.getConnection(url, "postgres", "iamedgt2510");            
            // JOptionPane.showMessageDialog(null, "Conexión Exitosa ");
         } catch (Exception e) {
              JOptionPane.showMessageDialog(null, "Conexión Erronea "+e);
