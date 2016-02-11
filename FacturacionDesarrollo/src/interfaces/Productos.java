@@ -537,7 +537,6 @@ public void limpiar()
     private void bloquearbotones()
     {
         btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
         btnCancelar.setEnabled(false);
         btnGuardar.setEnabled(false);       
     }
