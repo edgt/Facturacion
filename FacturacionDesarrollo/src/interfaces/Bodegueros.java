@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,14 +27,13 @@ public class Bodegueros extends javax.swing.JInternalFrame{
      */
     public Bodegueros() {
         initComponents();
-        cargarTabla("");
+        cargarTabla();
         bodeguerosNombre();
         tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
-                desbloquear();
-                btnBorrar.setEnabled(true);
+                desbloquear();                
                 if (tblDatos.getSelectedRow()!=-1){
                     int fila=tblDatos.getSelectedRow();
                     txtCodigo.setText(String.valueOf(tblDatos.getValueAt(fila, 0)));
@@ -49,6 +49,8 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         bloquear();
         limpiar();
         bloquearbotones();
+        btnNuevo.setEnabled(true);
+        btnSalir.setEnabled(true);
     }
     
     DefaultTableModel modelo;
@@ -79,36 +81,53 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
     }
     }
-// public void Modificar() {
-//        conexion cc = new conexion();
-//        Connection cn = cc.conectar();
-//        String sql = "";
-//        String    CI_BOD,NOM_BOD,APE_BOD, DIR_BOD,TEL_BOD, SUE_BOD, CI_SUP ;
-// }
-    
-
+    public void cargarTabla(){
+    String titulos[]={"CODIGO","NOMBRE","APELLIDO","DIRECCION","TELEFONO","SUELDO","SUPERVISOR"};
+    String[] Registros=new String[7];
+    conexion cc= new conexion();
+    Connection cn=cc.conectar();
+    modelo=new DefaultTableModel(null, titulos);
+    String sql;
+    sql="SELECT*FROM BODEGUEROS";
+    try{
+        Statement psd=(Statement) cn.createStatement();
+        ResultSet rs=psd.executeQuery(sql);
+        while(rs.next()){
+            Registros[0]=rs.getString("ci_bod");
+            Registros[1]=rs.getString("nom_bod");
+            Registros[2]=rs.getString("ape_bod");
+            Registros[3]=rs.getString("dir_bod");
+            Registros[4]=rs.getString("tel_bod");
+            Registros[5]=rs.getString("sue_bod");
+            Registros[6]=rs.getString("ci_sup");
+            modelo.addRow(Registros);
+            tblDatos.setModel(modelo);
+        }
+    }catch(SQLException e){
+        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+    }
+    }
     public void Actualizar() {
-         String CI_BOD,NOM_BOD,APE_BOD, DIR_BOD,TEL_BOD, SUE_BOD, CI_SUP ;
+        String CI_BOD,NOM_BOD,APE_BOD, DIR_BOD,TEL_BOD, SUE_BOD, CI_SUP ;
         conexion cc = new conexion();
         Connection cn = cc.conectar();
-        String sql = "";
+        String sql;
         
         CI_BOD = txtCodigo.getText();
-          NOM_BOD =txtNombre.getText();
-           APE_BOD =Apellido.getText();
-           DIR_BOD = txtDireccion.getText();
-           TEL_BOD =txtTelefono.getText();
-           SUE_BOD = txtSueldo.getText();
-           CI_SUP=String.valueOf(cbSuper.getSelectedItem());
+        NOM_BOD =txtNombre.getText();
+        APE_BOD =Apellido.getText();
+        DIR_BOD = txtDireccion.getText();
+        TEL_BOD =txtTelefono.getText();
+        SUE_BOD = txtSueldo.getText();
+        CI_SUP=String.valueOf(cbSuper.getSelectedItem());
        
-            sql = "update  viajes set  NOM_BOD='" + txtNombre.getText()
-                +"',APE_BOD='" + APE_BOD
-                 +"',DIR_BOD='" +  DIR_BOD
-                 +"',TEL_BOD='" + TEL_BOD
-                 +"',SUE_BOD='" + SUE_BOD
-                 +"',CI_SUP='" + CI_SUP
-                            
-                +"'where CI_BOD='" + txtCodigo.getText() + "'";
+        sql = "update  viajes set  NOM_BOD='" + NOM_BOD
+        +"',APE_BOD='" + APE_BOD
+        +"',DIR_BOD='" +  DIR_BOD
+        +"',TEL_BOD='" + TEL_BOD
+        +"',SUE_BOD='" + SUE_BOD
+        +"',CI_SUP='" + CI_SUP
+        +"'where CI_BOD='" + txtCodigo.getText() + "'";
 
         try {
             PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
@@ -126,7 +145,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     public String bodeguerosCodigo(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="SELECT*FROM BODEGUEROS WHERE NOM_BOD ='"+codigo+"'";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -134,7 +153,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             if(rs.next()){
                 return rs.getString("ci_bod");
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
         }
         return "";
@@ -142,8 +161,8 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     
     public String bodeguerosNombre(){
         conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
+        Connection cn=cc.conectar();
+        String sql;
         sql="SELECT*FROM BODEGUEROS";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -151,7 +170,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             while(rs.next()){
                 cbSuper.addItem(rs.getString("nom_bod"));
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
         }
         return "";
@@ -160,7 +179,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
      public String bodeguerosNombreTabla(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
-        String sql="";
+        String sql;
         sql="SELECT*FROM BODEGUEROS WHERE CI_BOD = '"+codigo+"'";
         try{
             Statement psd=(Statement) cn.createStatement();
@@ -168,7 +187,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             if(rs.next()){
                 return rs.getString("nom_bod");
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
         }
         return "";
@@ -176,7 +195,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     
     public void guardar(){
         conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
+        Connection cn=cc.conectar();
         String codigo,nombre,apellido,telefono,direccion,sup;
         int sueldo;
         
@@ -201,18 +220,19 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
-                cargarTabla("");
+                cargarTabla();
+                limpiar();
             }           
         } 
-       catch (Exception ex) {
+       catch (HeadlessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "No se puede insertar la información"+ex);
         }
     }
     
     public void modificar(){
         conexion cc=new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
+        Connection cn=cc.conectar();
+        String sql;
         sql="UPDATE BODEGUEROS SET ape_bod='"+Apellido.getText().toUpperCase()+"', "
                             + "nom_bod='"+txtNombre.getText().toUpperCase()+"', "
                             + "tel_bod='"+txtTelefono.getText()+"', "
@@ -225,9 +245,11 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
-                cargarTabla("");
+                cargarTabla();
+                limpiar();
+                txtCodigo.setEditable(true);
             }
-      }catch(Exception ex){
+      }catch(HeadlessException | SQLException ex){
             JOptionPane.showMessageDialog(null, ex); 
       }
     }
@@ -282,7 +304,6 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
@@ -304,38 +325,9 @@ public class Bodegueros extends javax.swing.JInternalFrame{
 
         jLabel8.setText("Teléfono:");
 
-        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNombreKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNombreKeyTyped(evt);
-            }
-        });
-
-        Apellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ApellidoActionPerformed(evt);
-            }
-        });
-        Apellido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ApellidoKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                ApellidoKeyTyped(evt);
-            }
-        });
-
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTelefonoKeyTyped(evt);
-            }
-        });
-
-        cbSuper.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbSuperActionPerformed(evt);
             }
         });
 
@@ -359,11 +351,6 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
-        txtSueldo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSueldoActionPerformed(evt);
-            }
-        });
         txtSueldo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtSueldoKeyTyped(evt);
@@ -459,18 +446,15 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435812_add_cross_new_plus_create.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
             }
         });
-        btnNuevo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnNuevoKeyPressed(evt);
-            }
-        });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435968_editor-floopy-dish-save-glyph.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -478,6 +462,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435952_update.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,6 +470,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435988_close_square_black.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -492,13 +478,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
-
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448436039_sign-out.png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -515,7 +495,6 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -533,10 +512,8 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
@@ -585,10 +562,9 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        conexion op = new conexion();
-        op.conectar();
-        desbloquear();
-        desbloquearbotones();
+      desbloquear();
+      bloquearbotones();
+      desbloquearbotones();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -596,6 +572,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        txtCodigo.setEditable(false);
         modificar();
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -603,41 +580,13 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         bloquearbotones();
         limpiar();
         bloquear();
+        btnNuevo.setEnabled(true);
+        btnSalir.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn=(Connection) cc.conectar();
-            String sql="";
-            sql="DELETE FROM BODEGUEROS WHERE ci_bod='"+txtCodigo.getText()+"'";
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla("");
-                bloquearbotones();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void cbSuperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbSuperActionPerformed
-
-    private void btnNuevoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnNuevoKeyPressed
-
-    }//GEN-LAST:event_btnNuevoKeyPressed
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
 if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()))
@@ -647,40 +596,6 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
  }        // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoKeyTyped
 
-    private void txtSueldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSueldoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSueldoActionPerformed
-
-    private void txtSueldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSueldoKeyTyped
-if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()))
-{
-     Toolkit.getDefaultToolkit().beep();
-     evt.consume();
- }        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSueldoKeyTyped
-
-    private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
-       
-    }//GEN-LAST:event_txtNombreKeyPressed
-
-    private void ApellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApellidoKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ApellidoKeyPressed
-
-    private void ApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ApellidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ApellidoActionPerformed
-
-    private void ApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ApellidoKeyTyped
-        ControlLetras(evt);
-        Mayusculas(evt);
-    }//GEN-LAST:event_ApellidoKeyTyped
-
-    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-        ControlLetras(evt);
-        Mayusculas(evt);
-    }//GEN-LAST:event_txtNombreKeyTyped
-
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         ControlNumeros(evt);
     }//GEN-LAST:event_txtCodigoKeyTyped
@@ -688,6 +603,14 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
     private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
         Mayusculas(evt);        // TODO add your handling code here:
     }//GEN-LAST:event_txtDireccionKeyTyped
+
+    private void txtSueldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSueldoKeyTyped
+        // TODO add your handling code here:
+        char c=evt.getKeyChar();
+        if(c<'0'||c>'9'){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSueldoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -726,7 +649,6 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Apellido;
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
@@ -775,10 +697,11 @@ public void limpiar()
     
     private void bloquearbotones()
     {
-        btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
+        btnNuevo.setEnabled(false);
+        btnActualizar.setEnabled(false);        
         btnCancelar.setEnabled(false);
         btnGuardar.setEnabled(false);       
+        btnSalir.setEnabled(false);
     }
     
     private void desbloquear ()
@@ -793,10 +716,10 @@ public void limpiar()
     }
     private void desbloquearbotones()
     {
-        btnActualizar.setEnabled(true);
-        btnBorrar.setEnabled(true);
+        btnActualizar.setEnabled(true);        
         btnCancelar.setEnabled(true);
-        btnGuardar.setEnabled(true);       
+        btnGuardar.setEnabled(true);
+        btnSalir.setEnabled(true);
     }
     
     private void desbloquearbotonesActualizar()

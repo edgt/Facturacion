@@ -6,6 +6,7 @@ package interfaces;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,13 +18,12 @@ public class conexion {
     
     public Connection conectar(){
      //   String url = "jdbc:postgresql://localhost:5432/facturacion";
-       String url = "jdbc:postgresql://192.168.10.10:5432/Facturacion";
-        String password = "root";
+       String url = "jdbc:postgresql://192.168.10.10:5432/Facturacion";        
         try {
             Class.forName("org.postgresql.Driver");
             conec = DriverManager.getConnection(url, "postgres", "iamedgt2510");            
            // JOptionPane.showMessageDialog(null, "Conexión Exitosa ");
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
              JOptionPane.showMessageDialog(null, "Conexión Erronea "+e);
         }
         return conec;
