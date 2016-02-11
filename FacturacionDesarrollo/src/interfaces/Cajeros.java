@@ -41,7 +41,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
                     txtDireccion.setText(String.valueOf(tblDatos.getValueAt(fila, 3)));
                     txtTelefono.setText(String.valueOf(tblDatos.getValueAt(fila, 4)));
                     txtSueldo.setText(String.valueOf(tblDatos.getValueAt(fila, 5)));
-                    cbSuper.setSelectedItem(bodeguerosNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 6))));
+                    cbSuper.setSelectedItem(CajerosNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 6))));
                 }
             }
         });
@@ -58,7 +58,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
     conexion cc= new conexion();
     Connection cn=cc.conectar();
     modelo=new DefaultTableModel(null, titulos);
-    String sql="";
+    String sql;
     sql="SELECT*FROM CAJEROS WHERE CI_CAJ LIKE ('%"+codigo+"%') ";
     try{
         Statement psd=cn.createStatement();
@@ -74,7 +74,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             modelo.addRow(Registros);
             tblDatos.setModel(modelo);
         }
-    }catch(Exception e){
+    }catch(SQLException e){
         JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
     }
     }
@@ -85,7 +85,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
     conexion cc= new conexion();
     Connection cn= cc.conectar();
     modelo=new DefaultTableModel(null, titulos);
-    String sql="";
+    String sql;
     sql="SELECT*FROM CAJEROS";
     try{
         Statement psd=(Statement) cn.createStatement();
@@ -101,7 +101,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
             modelo.addRow(Registros);
             tblDatos.setModel(modelo);
         }
-    }catch(Exception e){
+    }catch(SQLException e){
         JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
     }
     }
@@ -139,13 +139,13 @@ public class Cajeros extends javax.swing.JInternalFrame {
         return "";
     }
     
-     public String bodeguerosNombreTabla(String codigo){
+     public String CajerosNombreTabla(String codigo){
         conexion cc= new conexion();
         Connection cn=(Connection) cc.conectar();
         String sql;
         sql="SELECT*FROM CAJEROS WHERE CI_CAJ = '"+codigo+"'";
         try{
-            Statement psd=(Statement) cn.createStatement();
+            Statement psd=cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             if(rs.next()){
                 return rs.getString("nom_caj");
@@ -193,7 +193,7 @@ public class Cajeros extends javax.swing.JInternalFrame {
     
     public void modificar(){
         conexion cc=new conexion();
-        Connection cn=(Connection) cc.conectar();
+        Connection cn= cc.conectar();
         String sql;
         sql="UPDATE CAJEROS SET ape_caj='"+Apellido.getText().toUpperCase()+"', "
                             + "nom_caj='"+txtNombre.getText().toUpperCase()+"', "
