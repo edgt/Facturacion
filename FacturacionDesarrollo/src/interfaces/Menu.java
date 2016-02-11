@@ -17,7 +17,7 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    public Menu() { 
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
     }
