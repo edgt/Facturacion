@@ -201,7 +201,7 @@ public class Menu extends javax.swing.JFrame {
         if (!vent.isShowing()) {
             jDesktopPane1.add(vent);
         }
-        vent.setVisible(true);
+        vent.setVisible(true); 
         vent.show();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
