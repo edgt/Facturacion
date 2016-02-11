@@ -125,27 +125,7 @@ public class Clientes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex); 
       }
     }
-    public void borrar(){
-        if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn= cc.conectar();
-            String sql="";
-            sql="DELETE FROM CLIENTES WHERE ci_cli='"+txtCodigo.getText()+"'";
-            PreparedStatement psd=cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla("");
-                bloquearbotones();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-        }
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

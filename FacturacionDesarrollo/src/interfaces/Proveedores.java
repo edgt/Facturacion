@@ -31,8 +31,7 @@ public class Proveedores extends javax.swing.JInternalFrame {
             public void valueChanged(ListSelectionEvent e) {
                 desbloquearbotonesActualizar();
                 desbloquear();
-                btnCancelar.setEnabled(true);                
-                 btnBorrar.setEnabled(true);
+                btnCancelar.setEnabled(true);   
                 if (tblDatos.getSelectedRow() != -1) {
                     int fila = tblDatos.getSelectedRow();
                     txtCodigo.setText(String.valueOf(tblDatos.getValueAt(fila, 0)));
@@ -53,12 +52,12 @@ public class Proveedores extends javax.swing.JInternalFrame {
         String titulos[] = {"CODIGO", "NOMBRE", "DIRECCION", "TELEFONO"};
         String[] Registros = new String[4];
         conexion cc = new conexion();
-        Connection cn = (Connection) cc.conectar();
+        Connection cn =  cc.conectar();
         modelo = new DefaultTableModel(null, titulos);
-        String sql = "";
+        String sql;
         sql = "SELECT * FROM PROVEEDORES WHERE COD_PROV LIKE ('%" + codigo + "%') ";
         try {
-            Statement psd = (Statement) cn.createStatement();
+            Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
             while (rs.next()) {
                 Registros[0] = rs.getString("cod_prov");
@@ -170,10 +169,10 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("ADMINISTRACION PROVEEDORES");
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -269,9 +268,10 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435812_add_cross_new_plus_create.png"))); // NOI18N
         btnNuevo.setText("     Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -279,6 +279,7 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
             }
         });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435968_editor-floopy-dish-save-glyph.png"))); // NOI18N
         btnGuardar.setText("    Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -286,6 +287,7 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
             }
         });
 
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435952_update.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -293,6 +295,7 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435988_close_square_black.png"))); // NOI18N
         btnCancelar.setText("   Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,13 +303,7 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
             }
         });
 
-        btnBorrar.setText("       Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
-
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448436039_sign-out.png"))); // NOI18N
         btnSalir.setText("        Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,7 +320,6 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -340,11 +336,9 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
                 .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalir)
-                .addGap(21, 21, 21))
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -364,12 +358,14 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                .addGap(23, 23, 23))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -398,28 +394,6 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
         bloquear();
         btnNuevo.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (JOptionPane.showConfirmDialog(null,
-                "¿Esta seguro que desea eliminar este registro?", "ELIMINAR", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            try {
-                conexion cc = new conexion();
-                Connection cn = (Connection) cc.conectar();
-                String sql = "";
-                sql = "DELETE FROM PROVEEDORES WHERE cod_prov='" + txtCodigo.getText() + "'";
-                PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
-                int n = psd.executeUpdate();
-                if (n > 0) {
-                    JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                    limpiar();
-                    cargarTabla("");
-                    bloquearbotones();
-                }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
     
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -479,7 +453,6 @@ public void Mayusculas(java.awt.event.KeyEvent evt) {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
@@ -515,8 +488,7 @@ public void limpiar() {
 
     private void bloquearbotones() {
         btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
-        btnCancelar.setEnabled(false);
+              btnCancelar.setEnabled(false);
         btnGuardar.setEnabled(false);
     }
 
@@ -528,8 +500,7 @@ public void limpiar() {
     }
 
     private void desbloquearbotones() {
-        btnActualizar.setEnabled(true);
-        btnBorrar.setEnabled(true);
+        btnActualizar.setEnabled(true); 
         btnCancelar.setEnabled(true);
         btnGuardar.setEnabled(true);
     }
