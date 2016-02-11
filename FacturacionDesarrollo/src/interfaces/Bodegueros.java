@@ -28,7 +28,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     public Bodegueros() {
         initComponents();
         cargarTabla();
-        bodeguerosNombre();
+        cargarBodegueros();
         tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -42,7 +42,12 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                     txtDireccion.setText(String.valueOf(tblDatos.getValueAt(fila, 3)));
                     txtTelefono.setText(String.valueOf(tblDatos.getValueAt(fila, 4)));
                     txtSueldo.setText(String.valueOf(tblDatos.getValueAt(fila, 5)));
-                    cbSuper.setSelectedItem(bodeguerosNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 6))));
+                    cargarBodegueros();
+                    cbSuper.setSelectedItem(String.valueOf(tblDatos.getValueAt(fila, 6)));
+                    bloquearbotones();
+                    btnCancelar.setEnabled(true);
+                    btnActualizar.setEnabled(true);
+                    btnSalir.setEnabled(true);
                 }
             }
         });
@@ -59,9 +64,9 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     String titulos[]={"CODIGO","NOMBRE","APELLIDO","DIRECCION","TELEFONO","SUELDO","SUPERVISOR"};
     String[] Registros=new String[7];
     conexion cc= new conexion();
-    Connection cn=(Connection) cc.conectar();
+    Connection cn=cc.conectar();
     modelo=new DefaultTableModel(null, titulos);
-    String sql="";
+    String sql;
     sql="SELECT*FROM BODEGUEROS WHERE CI_BOD LIKE ('%"+codigo+"%') ";
     try{
         Statement psd=(Statement) cn.createStatement();
@@ -77,7 +82,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             modelo.addRow(Registros);
             tblDatos.setModel(modelo);
         }
-    }catch(Exception e){
+    }catch(SQLException e){
         JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
     }
     }
@@ -90,7 +95,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
     String sql;
     sql="SELECT*FROM BODEGUEROS";
     try{
-        Statement psd=(Statement) cn.createStatement();
+        Statement psd=cn.createStatement();
         ResultSet rs=psd.executeQuery(sql);
         while(rs.next()){
             Registros[0]=rs.getString("ci_bod");
@@ -130,69 +135,47 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         +"'where CI_BOD='" + txtCodigo.getText() + "'";
 
         try {
-            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            PreparedStatement psd =cn.prepareStatement(sql);
             int i = psd.executeUpdate();
             if (i > 0) {
                 JOptionPane.showMessageDialog(null, "correctamente ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
-                cargarTabla(sql);
+                cargarTabla();
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
-    }
-
-    public String bodeguerosCodigo(String codigo){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql;
-        sql="SELECT*FROM BODEGUEROS WHERE NOM_BOD ='"+codigo+"'";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
-                return rs.getString("ci_bod");
-            }
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-        }
-        return "";
-    }
+    }  
     
-    public String bodeguerosNombre(){
+    public void cargarBodegueros(){
         conexion cc= new conexion();
         Connection cn=cc.conectar();
         String sql;
-        sql="SELECT*FROM BODEGUEROS";
+        sql="SELECT ci_bod FROM BODEGUEROS";
         try{
-            Statement psd=(Statement) cn.createStatement();
+            Statement psd=cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
             while(rs.next()){
-                cbSuper.addItem(rs.getString("nom_bod"));
+                cbSuper.addItem(rs.getString("ci_bod"));
             }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-        }
-        return "";
+        }        
     }
-    
-     public String bodeguerosNombreTabla(String codigo){
+    public void nombreBodeguero(String ci){
         conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
+        Connection cn=cc.conectar();
         String sql;
-        sql="SELECT*FROM BODEGUEROS WHERE CI_BOD = '"+codigo+"'";
+        sql="SELECT nom_bod FROM BODEGUEROS WHERE CI_BOD='"+ci+"'";
         try{
-            Statement psd=(Statement) cn.createStatement();
+            Statement psd=cn.createStatement();
             ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
-                return rs.getString("nom_bod");
+            while(rs.next()){
+                txtNomBod.setText(rs.getString("nom_bod"));
             }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-        }
-        return "";
+        }        
     }
-    
     public void guardar(){
         conexion cc= new conexion();
         Connection cn=cc.conectar();
@@ -204,12 +187,12 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         apellido=Apellido.getText().toUpperCase();
         telefono=txtTelefono.getText().toUpperCase();
         direccion=txtDireccion.getText().toUpperCase();
-        sup=bodeguerosCodigo(cbSuper.getSelectedItem().toString());
+        sup=String.valueOf(cbSuper.getSelectedItem()).substring(0, WIDTH);
         sueldo=Integer.valueOf(txtSueldo.getText());
         String sql="INSERT INTO BODEGUEROS VALUES(?,?,?,?,?,?,?)";
         
        try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
+            PreparedStatement psd=cn.prepareStatement(sql);
             psd.setString(1,codigo);
             psd.setString(2,nombre);
             psd.setString(3,apellido);
@@ -222,6 +205,9 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                 JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
                 cargarTabla();
                 limpiar();
+                bloquearbotones();
+                btnNuevo.setEnabled(true);
+                btnSalir.setEnabled(true);
             }           
         } 
        catch (HeadlessException | SQLException ex) {
@@ -238,10 +224,10 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                             + "tel_bod='"+txtTelefono.getText()+"', "
                             + "dir_bod='"+txtDireccion.getText()+"', "
                             + "sue_bod='"+Integer.valueOf(txtSueldo.getText())+"', "
-                            + "ci_sup='"+bodeguerosCodigo(cbSuper.getSelectedItem().toString())+"' "
+                            + "ci_sup='"+cbSuper.getSelectedItem().toString()+"' "
                 +"WHERE ci_bod='"+txtCodigo.getText()+"'";    
         try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);     
+            PreparedStatement psd=cn.prepareStatement(sql);     
             int n=psd.executeUpdate();
             if(n>0){
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
@@ -299,6 +285,7 @@ public class Bodegueros extends javax.swing.JInternalFrame{
         jLabel6 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         txtSueldo = new javax.swing.JTextField();
+        txtNomBod = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -331,6 +318,12 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
+        cbSuper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSuperActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Supervisor:");
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -357,12 +350,20 @@ public class Bodegueros extends javax.swing.JInternalFrame{
             }
         });
 
+        txtNomBod.setEditable(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,23 +388,18 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
-                                    .addComponent(txtDireccion)))))
+                                    .addComponent(txtDireccion)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbSuper, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbSuper, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNomBod, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -439,7 +435,8 @@ public class Bodegueros extends javax.swing.JInternalFrame{
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbSuper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(txtNomBod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -612,6 +609,11 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
         }
     }//GEN-LAST:event_txtSueldoKeyTyped
 
+    private void cbSuperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperActionPerformed
+        // TODO add your handling code here:
+        nombreBodeguero(String.valueOf(cbSuper.getSelectedItem()));
+    }//GEN-LAST:event_cbSuperActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -669,6 +671,7 @@ if(!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyCha
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNomBod;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSueldo;
     private javax.swing.JTextField txtTelefono;
