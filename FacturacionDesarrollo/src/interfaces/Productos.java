@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -120,7 +121,7 @@ public class Productos extends javax.swing.JInternalFrame {
         puc=Integer.valueOf(txtPUC.getText());
         puv=Integer.valueOf(txtPUV.getText());
         stock=Integer.valueOf(txtStock.getText());
-        String sql,repetidos,registro=null;
+        String sql;
         
         sql="INSERT INTO PRODUCTOS VALUES(?,?,?,?,?,?,?,?)";        
        try {
@@ -139,7 +140,7 @@ public class Productos extends javax.swing.JInternalFrame {
                 cargarTabla();
             }           
         } 
-       catch (Exception ex) {
+       catch (HeadlessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "No se puede insertar la información"+ex);
         }
     }
