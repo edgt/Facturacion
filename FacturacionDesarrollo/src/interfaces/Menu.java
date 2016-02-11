@@ -10,7 +10,7 @@ import static java.awt.Frame.MAXIMIZED_BOTH;
 
 /**
  *
- * @author Andrés
+ * @author Andrés 
  */
 public class Menu extends javax.swing.JFrame {
 
