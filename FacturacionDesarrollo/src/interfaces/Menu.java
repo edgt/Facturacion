@@ -5,6 +5,18 @@
 package interfaces;
 
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -142,6 +154,11 @@ public class Menu extends javax.swing.JFrame {
         jMenu3.add(jMenuItem10);
 
         jMenuItem11.setText("Pedidos");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem11);
 
         jMenuBar1.add(jMenu3);
@@ -228,6 +245,33 @@ public class Menu extends javax.swing.JFrame {
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+         try {
+        conexion cc=new conexion();
+                    Connection cn=  cc.conectar();
+        Map parametros=  new HashMap();
+                    parametros.put("marca","1");                    
+                     parametros.put("color","1");     
+        JasperReport reporte;
+       
+            reporte = JasperCompileManager.compileReport("C:/Reportes/Pedidos.jrxml");
+       
+            
+        
+            JasperPrint imprimir=JasperFillManager.fillReport(reporte, parametros, cn);
+            //JasperViewer.viewReport(imprimir,false);
+            JRViewer ver=new JRViewer(imprimir);
+            JInternalFrame visualizar=new JInternalFrame("Reporte");
+            visualizar.getContentPane().add(ver);
+            visualizar.setClosable(true);
+            jDesktopPane1.add(visualizar);
+             } catch (JRException ex) {
+                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+             }
+    
+            
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
