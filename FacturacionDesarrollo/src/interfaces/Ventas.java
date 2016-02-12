@@ -4,9 +4,7 @@
  */
 package interfaces;
 
-import com.sun.java.accessibility.util.AWTEventMonitor;
 import java.awt.HeadlessException;
-import java.awt.event.KeyAdapter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,13 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /** 
  *
  * @author Andrés
  */
-public class Ventas extends javax.swing.JFrame {
+public class Ventas extends javax.swing.JInternalFrame {
     DefaultTableModel modelo;
     
     public Ventas() {        
@@ -264,8 +261,7 @@ public class Ventas extends javax.swing.JFrame {
                av=Integer.valueOf(tblDatos.getValueAt(i, 3).toString());               
                n=av+1;
            }
-       }
-       System.out.println(n);
+       }       
        return n;
    }
    public void setRepetido(String comp){
@@ -628,6 +624,7 @@ public class Ventas extends javax.swing.JFrame {
     private void txtBarraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBarraActionPerformed
         // TODO add your handling code here:
         cargarProductoComprado(txtBarra.getText());
+        txtBarra.setText("");
         txtBarra.requestFocus();
     }//GEN-LAST:event_txtBarraActionPerformed
 
