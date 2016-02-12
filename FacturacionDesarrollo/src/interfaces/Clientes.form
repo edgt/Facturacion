@@ -226,9 +226,6 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnNuevo">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/recursos/1448435812_add_cross_new_plus_create.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="     Nuevo"/>
           </Properties>
           <Events>
@@ -237,9 +234,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnGuardar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/recursos/1448435968_editor-floopy-dish-save-glyph.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="    Guardar"/>
           </Properties>
           <Events>
@@ -248,9 +242,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnActualizar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/recursos/1448435952_update.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Actualizar"/>
           </Properties>
           <Events>
@@ -259,9 +250,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/recursos/1448435988_close_square_black.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="   Cancelar"/>
           </Properties>
           <Events>
@@ -270,9 +258,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnSalir">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/recursos/1448436039_sign-out.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="        Salir"/>
           </Properties>
           <Events>
