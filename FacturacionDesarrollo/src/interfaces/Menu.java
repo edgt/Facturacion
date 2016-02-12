@@ -202,6 +202,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         Pedidos p=new Pedidos();
         p.nuevo();
+        jDesktopPane1.add(p);
         p.show();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
@@ -209,6 +210,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         Ventas v=new Ventas();
         v.nuevo();
+        jDesktopPane1.add(v);
         v.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
