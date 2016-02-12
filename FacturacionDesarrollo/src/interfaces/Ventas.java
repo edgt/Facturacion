@@ -22,35 +22,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Andrés
  */
-public class Ventas extends javax.swing.JFrame {
+public class Ventas extends javax.swing.JInternalFrame {
 
     DefaultTableModel modelo;
     float total=0;
-    public Ventas() {
-        txtTotal.setText(String.valueOf(total));
+    public Ventas() {        
         initComponents();
+        txtTotal.setText(String.valueOf(total));
         cargarTabla();
         clientesNombre();
         cajeroNombre();
-//        tblDatos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                desbloquearbotonesActualizar();
-//                desbloquear();
-//                btnBorrar.setEnabled(true);
-//                if (tblDatos.getSelectedRow()!=-1){
-//                    int fila=tblDatos.getSelectedRow();
-//                    txtNumero.setText(String.valueOf(tblDatos.getValueAt(fila, 0)));
-//                    jdcFec_rea.setDate(new Date (fechaTabla(String.valueOf(tblDatos.getValueAt(fila, 1)))));
-//                    cbCliente.setSelectedItem(clientesNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 2))));
-//                    cbCajero.setSelectedItem(cajeroNombreTabla(String.valueOf(tblDatos.getValueAt(fila, 3))));
-//                    txtTotal.setText(String.valueOf(tblDatos.getValueAt(fila, 4)));
-//                }
-//            }
-//        });
-//        bloquear();
-//        limpiar();
-//        bloquearbotones();
+
     }
     
     public int cargarNumero(){
@@ -287,7 +269,7 @@ public class Ventas extends javax.swing.JFrame {
         }
     }
     
-    public void ingresarDetalles(){
+    public void IngresarDetalles(){
         conexion c=new conexion();
         Connection cn=c.conectar();
         int nfil;
@@ -367,7 +349,6 @@ public class Ventas extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
@@ -378,7 +359,7 @@ public class Ventas extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel3.setText("Fecha realizacion");
 
@@ -443,6 +424,7 @@ public class Ventas extends javax.swing.JFrame {
                 .addGap(94, 94, 94))
         );
 
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435812_add_cross_new_plus_create.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -450,6 +432,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435968_editor-floopy-dish-save-glyph.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -457,6 +440,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435952_update.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,6 +448,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448435988_close_square_black.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,13 +456,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
-
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/1448436039_sign-out.png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -494,7 +473,6 @@ public class Ventas extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBorrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -511,9 +489,7 @@ public class Ventas extends javax.swing.JFrame {
                 .addComponent(btnActualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -562,7 +538,7 @@ public class Ventas extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -592,7 +568,7 @@ public class Ventas extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtBarra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -603,7 +579,7 @@ public class Ventas extends javax.swing.JFrame {
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -622,6 +598,7 @@ public class Ventas extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
       guardarVentas();
+      IngresarDetalles();
       
       
         
@@ -636,28 +613,6 @@ public class Ventas extends javax.swing.JFrame {
         limpiar();
         bloquear();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        if (JOptionPane.showConfirmDialog(null,
-            "¿Esta seguro que desea eliminar este registro?","ELIMINAR",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-        try {
-            conexion cc= new conexion();
-            Connection cn=(Connection) cc.conectar();
-            String sql="";
-            sql="DELETE FROM VENTAS WHERE num_ven='"+txtNumero.getText()+"'";
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if (n>0){
-                JOptionPane.showMessageDialog(null, "Registro borrado correctamente");
-                limpiar();
-                cargarTabla();
-                bloquearbotones();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-        }
-    }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         this.dispose();
@@ -710,7 +665,6 @@ public class Ventas extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
@@ -757,9 +711,7 @@ public void limpiar()
     private void bloquearbotones()
     {
         btnActualizar.setEnabled(false);
-        btnBorrar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        btnGuardar.setEnabled(false);       
+         btnGuardar.setEnabled(false);       
     }
     
     private void desbloquear ()
@@ -774,7 +726,6 @@ public void limpiar()
     private void desbloquearbotones()
     {
         btnActualizar.setEnabled(true);
-        btnBorrar.setEnabled(true);
         btnCancelar.setEnabled(true);
         btnGuardar.setEnabled(true);       
     }
