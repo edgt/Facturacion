@@ -18,310 +18,312 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-/** 
+/**
  *
  * @author Andrés
  */
 public class Ventas extends javax.swing.JInternalFrame {
 
     DefaultTableModel modelo;
-    float total=0;
-    public Ventas() {        
+    float total = 0;
+
+    public Ventas() {
         initComponents();
         txtTotal.setText(String.valueOf(total));
         cargarTabla();
         clientesNombre();
         cajeroNombre();
+        cargarNumero();
+        btnActualizar.setEnabled(false);
+        btnGuardar.setEnabled(false);
 
     }
-    
-    public int cargarNumero(){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        int valor=1;
-        sql="SELECT MAX(num_ven) FROM ventas";
-        try{
-           Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
-                valor=rs.getInt("max")+1;
+
+    public int cargarNumero() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        int valor = 1;
+        sql = "SELECT MAX(num_ven) FROM ventas";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.next()) {
+                valor = rs.getInt("max") + 1;
+                txtCantidad.setText(String.valueOf(valor));
+                JOptionPane.showMessageDialog(null, "se obtuvo " + valor);
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT "+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT " + e);
         }
-        return valor;        
-    }
-    public String fechaTabla(String fecha){
-    return String.valueOf(String.valueOf((fecha.charAt(8))+String.valueOf(fecha.charAt(9)))+"/"
-                        +(String.valueOf(fecha.charAt(5))+String.valueOf(fecha.charAt(6)))+"/"
-                        +(String.valueOf(fecha.charAt(0))+String.valueOf(fecha.charAt(1))
-                        + String.valueOf(fecha.charAt(2))+String.valueOf(fecha.charAt(3))));
-}
-    
-
-     public void cargarCroductoComprado(){
-    String titulos[]={"CODIGO","CODIGO DE BARRA","NOMBRE","MARCA","PUV","Sub-total"};
-         Object [] Registros=new String[5];
-    conexion cc= new conexion();
-    Connection cn=(Connection) cc.conectar();
-    modelo=new DefaultTableModel(null, titulos);
-    String sql="";
-    sql="SELECT*FROM productos where cod_barras='"+txtBarra.getText()+"'";
-    
-    try{
-        Statement psd=(Statement) cn.createStatement();
-        ResultSet rs=psd.executeQuery(sql);
-        while(rs.next()){
-            
-            Registros[1]=rs.getString("cod_prod");
-            Registros[2]=txtBarra.getText();
-            Registros[3]=rs.getString("nom_prod");
-            Registros[4]=rs.getString("puv");
-            Registros[5]=  (Float.valueOf(rs.getString("puv")))* (Integer.valueOf(txtCantidad.getText()));            
-            modelo.addRow(Registros);
-            tblDatos.setModel(modelo);
-            total=total+(Float.valueOf(rs.getString("puv")))* (Integer.valueOf(txtCantidad.getText()));
-            txtTotal.setText(String.valueOf(total));
-        }
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-    }
-    }
-   
-    
-    public void cargarTabla(String codigo){
-    String titulos[]={"NUMERO","FEC VEN","CLIENTE","CAJERO","TOTAL"};
-    String[] Registros=new String[5];
-    conexion cc= new conexion();
-    Connection cn=(Connection) cc.conectar();
-    modelo=new DefaultTableModel(null, titulos);
-    String sql="";
-    sql="SELECT*FROM VENTAS WHERE NUM_VEN ='"+codigo+"'";
-    try{
-        Statement psd=(Statement) cn.createStatement();
-        ResultSet rs=psd.executeQuery(sql);
-        while(rs.next()){
-            Registros[0]=rs.getString("num_ven");
-            Registros[1]=rs.getString("fec_ven");
-            Registros[2]=rs.getString("ci_cli");
-            Registros[3]=rs.getString("ci_caj");
-            Registros[4]=rs.getString("tot_ven");
-            modelo.addRow(Registros);
-            tblDatos.setModel(modelo);
-        }
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-    }
-    }
-    
-    public void cargarTabla(){
-    String titulos[]={"NUMERO","FEC VEN","CLIENTE","CAJERO","TOTAL"};
-    String[] Registros=new String[5];
-    conexion cc= new conexion();
-    Connection cn=(Connection) cc.conectar();
-    modelo=new DefaultTableModel(null, titulos);
-    String sql="";
-    sql="SELECT*FROM VENTAS";
-    try{
-        Statement psd=(Statement) cn.createStatement();
-        ResultSet rs=psd.executeQuery(sql);
-        while(rs.next()){
-            Registros[0]=rs.getString("num_ven");
-            Registros[1]=rs.getString("fec_ven");
-            Registros[2]=rs.getString("ci_cli");
-            Registros[3]=rs.getString("ci_caj");
-            Registros[4]=rs.getString("tot_ven");
-            modelo.addRow(Registros);
-            tblDatos.setModel(modelo);
-        }
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
-    }
+        return valor;
     }
 
-    public String clientesCodigo(String codigo){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CLIENTES WHERE nom_cli ='"+codigo+"'";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
+    public String fechaTabla(String fecha) {
+        return String.valueOf(String.valueOf((fecha.charAt(8)) + String.valueOf(fecha.charAt(9))) + "/"
+                + (String.valueOf(fecha.charAt(5)) + String.valueOf(fecha.charAt(6))) + "/"
+                + (String.valueOf(fecha.charAt(0)) + String.valueOf(fecha.charAt(1))
+                + String.valueOf(fecha.charAt(2)) + String.valueOf(fecha.charAt(3))));
+    }
+
+    public void cargarCroductoComprado() {
+        String titulos[] = {"CODIGO", "CODIGO DE BARRA", "NOMBRE", "MARCA", "PUV", "Sub-total"};
+        Object[] Registros = new String[5];
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        modelo = new DefaultTableModel(null, titulos);
+        String sql = "";
+        sql = "SELECT*FROM productos where cod_barras='" + txtBarra.getText() + "'";
+
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+
+                Registros[1] = rs.getString("cod_prod");
+                Registros[2] = txtBarra.getText();
+                Registros[3] = rs.getString("nom_prod");
+                Registros[4] = rs.getString("puv");
+                Registros[5] = (Float.valueOf(rs.getString("puv"))) * (Integer.valueOf(txtCantidad.getText()));
+                modelo.addRow(Registros);
+                tblDatos.setModel(modelo);
+                total = total + (Float.valueOf(rs.getString("puv"))) * (Integer.valueOf(txtCantidad.getText()));
+                txtTotal.setText(String.valueOf(total));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
+        }
+    }
+
+    public void cargarTabla(String codigo) {
+        String titulos[] = {"NUMERO", "FEC VEN", "CLIENTE", "CAJERO", "TOTAL"};
+        String[] Registros = new String[5];
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        modelo = new DefaultTableModel(null, titulos);
+        String sql = "";
+        sql = "SELECT*FROM VENTAS WHERE NUM_VEN ='" + codigo + "'";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                Registros[0] = rs.getString("num_ven");
+                Registros[1] = rs.getString("fec_ven");
+                Registros[2] = rs.getString("ci_cli");
+                Registros[3] = rs.getString("ci_caj");
+                Registros[4] = rs.getString("tot_ven");
+                modelo.addRow(Registros);
+                tblDatos.setModel(modelo);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
+        }
+    }
+
+    public void cargarTabla() {
+        String titulos[] = {"NUMERO", "FEC VEN", "CLIENTE", "CAJERO", "TOTAL"};
+        String[] Registros = new String[5];
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        modelo = new DefaultTableModel(null, titulos);
+        String sql = "";
+        sql = "SELECT*FROM VENTAS";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                Registros[0] = rs.getString("num_ven");
+                Registros[1] = rs.getString("fec_ven");
+                Registros[2] = rs.getString("ci_cli");
+                Registros[3] = rs.getString("ci_caj");
+                Registros[4] = rs.getString("tot_ven");
+                modelo.addRow(Registros);
+                tblDatos.setModel(modelo);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
+        }
+    }
+
+    public String clientesCodigo(String codigo) {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CLIENTES WHERE nom_cli ='" + codigo + "'";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.next()) {
                 return rs.getString("ci_cli");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-    
-    public String clientesNombre(){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CLIENTES";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            while(rs.next()){
+
+    public String clientesNombre() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CLIENTES";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
                 cbCliente.addItem(rs.getString("nom_cli"));
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-    
-     public String clientesNombreTabla(String codigo){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CLIENTES WHERE CI_CLI = '"+codigo+"'";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
+
+    public String clientesNombreTabla(String codigo) {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CLIENTES WHERE CI_CLI = '" + codigo + "'";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.next()) {
                 return rs.getString("nom_cli");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-     
-     public String cajeroCodigo(String codigo){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CAJEROS WHERE NOM_CAJ ='"+codigo+"'";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
+
+    public String cajeroCodigo(String codigo) {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CAJEROS WHERE NOM_CAJ ='" + codigo + "'";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.next()) {
                 return rs.getString("ci_caj");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-    
-    public String cajeroNombre(){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CAJEROS";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            while(rs.next()){
+
+    public String cajeroNombre() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CAJEROS";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
                 cbCajero.addItem(rs.getString("nom_caj"));
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-    
-     public String cajeroNombreTabla(String codigo){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="SELECT*FROM CAJEROS WHERE CI_CAJ = '"+codigo+"'";
-        try{
-            Statement psd=(Statement) cn.createStatement();
-            ResultSet rs=psd.executeQuery(sql);
-            if(rs.next()){
+
+    public String cajeroNombreTabla(String codigo) {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "SELECT*FROM CAJEROS WHERE CI_CAJ = '" + codigo + "'";
+        try {
+            Statement psd = (Statement) cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            if (rs.next()) {
                 return rs.getString("nom_caj");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT"+e);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha podido realizar el SELECT" + e);
         }
         return "";
     }
-    
-    public void guardarVentas(){
-        conexion cc= new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String fec_rea,ci_cli,ci_caj;
-        int total,numero;
-        
-        numero=Integer.valueOf(txtNumero.getText());
-        fec_rea=formatoFecha(jdcFec_rea);
-        total=Integer.valueOf(txtTotal.getText());
-        ci_cli=clientesCodigo(cbCliente.getSelectedItem().toString());
-        ci_caj=cajeroCodigo(cbCajero.getSelectedItem().toString());
-        
-        String sql="INSERT INTO VENTAS VALUES("+numero+",'"+fec_rea+"','"+ci_cli+"','"+ci_caj+"',"+total+")";
-        
-       try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);
-            int n=psd.executeUpdate();
-            if(n>0){
-                JOptionPane.showMessageDialog(null, "Se inserto correctamente "); 
+
+    public void guardarVentas() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String fec_rea, ci_cli, ci_caj;
+        int total, numero;
+
+        numero = Integer.valueOf(txtNumero.getText());
+        fec_rea = formatoFecha(jdcFec_rea);
+        total = Integer.valueOf(txtTotal.getText());
+        ci_cli = clientesCodigo(cbCliente.getSelectedItem().toString());
+        ci_caj = cajeroCodigo(cbCajero.getSelectedItem().toString());
+
+        String sql = "INSERT INTO VENTAS VALUES(" + numero + ",'" + fec_rea + "','" + ci_cli + "','" + ci_caj + "'," + total + ")";
+
+        try {
+            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            int n = psd.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "Se inserto correctamente ");
                 cargarTabla();
-            }           
-        } 
-       catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "No se puede insertar la información"+ex);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se puede insertar la información" + ex);
         }
     }
-    
-    public void IngresarDetalles(){
-        conexion c=new conexion();
-        Connection cn=c.conectar();
+
+    public void IngresarDetalles() {
+        conexion c = new conexion();
+        Connection cn = c.conectar();
         int nfil;
-        String sql="INSERT INTO DETALLE_VENTA VALUES(num_ven,cod_prod,can_ven,subt)";
-        nfil=tblDatos.getRowCount();
-        for(int i=0;i<nfil;i++){
+        String sql = "INSERT INTO DETALLE_VENTA VALUES(num_ven,cod_prod,can_ven,subt)";
+        nfil = tblDatos.getRowCount();
+        for (int i = 0; i < nfil; i++) {
             try {
                 PreparedStatement psd = cn.prepareStatement(sql);
-                psd.setString(1,txtNumero.getText());
-                psd.setString(2,String.valueOf(tblDatos.getValueAt(i,0)));                
-                psd.setString(3,txtCantidad.getText());                
-                psd.setString(4,String.valueOf(tblDatos.getValueAt(i,5)));
-               
+                psd.setString(1, txtNumero.getText());
+                psd.setString(2, String.valueOf(tblDatos.getValueAt(i, 0)));
+                psd.setString(3, txtCantidad.getText());
+                psd.setString(4, String.valueOf(tblDatos.getValueAt(i, 5)));
+
                 int n = psd.executeUpdate();
                 if (n > 0) {
-                    JOptionPane.showMessageDialog(null, "Se inserto correctamente","INFORMACIÓN",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Se inserto correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
                 }
-            } catch (SQLException  ex) {
+            } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
     }
-    
-    
-    
-    public String formatoFecha(JDateChooser fecha){
-    String formato ="yyyy-MM-dd"; 
-    //Formato
-     Date date = fecha.getDate();
-     SimpleDateFormat sdf = new SimpleDateFormat(formato);
-     return sdf.format(date);
-}
-    
-    public void modificar(){
-        conexion cc=new conexion();
-        Connection cn=(Connection) cc.conectar();
-        String sql="";
-        sql="UPDATE VENTAS SET fec_ven='"+formatoFecha(jdcFec_rea)+"', "
-                            + "tot_ven='"+Integer.valueOf(txtTotal.getText())+"', "
-                            + "ci_cli='"+clientesCodigo(cbCliente.getSelectedItem().toString())+"', "
-                            + "ci_caj='"+cajeroCodigo(cbCajero.getSelectedItem().toString())+"' "
-                +"WHERE num_ven='"+Integer.valueOf(txtNumero.getText())+"'";    
+
+    public String formatoFecha(JDateChooser fecha) {
+        String formato = "yyyy-MM-dd";
+        //Formato
+        Date date = fecha.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        return sdf.format(date);
+    }
+
+    public void modificar() {
+        conexion cc = new conexion();
+        Connection cn = (Connection) cc.conectar();
+        String sql = "";
+        sql = "UPDATE VENTAS SET fec_ven='" + formatoFecha(jdcFec_rea) + "', "
+                + "tot_ven='" + Integer.valueOf(txtTotal.getText()) + "', "
+                + "ci_cli='" + clientesCodigo(cbCliente.getSelectedItem().toString()) + "', "
+                + "ci_caj='" + cajeroCodigo(cbCajero.getSelectedItem().toString()) + "' "
+                + "WHERE num_ven='" + Integer.valueOf(txtNumero.getText()) + "'";
         try {
-            PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);     
-            int n=psd.executeUpdate();
-            if(n>0){
+            PreparedStatement psd = (PreparedStatement) cn.prepareStatement(sql);
+            int n = psd.executeUpdate();
+            if (n > 0) {
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                 cargarTabla();
             }
-      }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, ex); 
-      }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
 
     /**
@@ -594,14 +596,15 @@ public class Ventas extends javax.swing.JInternalFrame {
         op.conectar();
         desbloquear();
         desbloquearbotones();
+        btnActualizar.setEnabled(false);
+        btnNuevo.setEnabled(false);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      guardarVentas();
-      IngresarDetalles();
-      
-      
-        
+        guardarVentas();
+        IngresarDetalles();
+
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -612,6 +615,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         bloquearbotones();
         limpiar();
         bloquear();
+        btnNuevo.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -619,14 +623,14 @@ public class Ventas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Detalle_ventas d=new Detalle_ventas();
+        Detalle_ventas d = new Detalle_ventas();
         Menu.jDesktopPane1.add(d);
         d.setVisible(true);
         d.show();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       cargarCroductoComprado();
+        cargarCroductoComprado();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -690,32 +694,28 @@ public class Ventas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
-public void limpiar()
-    {
+public void limpiar() {
         txtNumero.setText("");
-        ((JTextField)jdcFec_rea.getDateEditor().getUiComponent()).setText("");
+        ((JTextField) jdcFec_rea.getDateEditor().getUiComponent()).setText("");
         txtTotal.setText("");
 //        cbCliente.setSelectedIndex(0);
 //        cbCajero.setSelectedIndex(0);
     }
-    
-    private void bloquear()
-    {
+
+    private void bloquear() {
         txtNumero.setEnabled(false);
         jdcFec_rea.setEnabled(false);
         txtTotal.setEnabled(false);
         cbCliente.setEnabled(false);
         cbCajero.setEnabled(false);
     }
-    
-    private void bloquearbotones()
-    {
+
+    private void bloquearbotones() {
         btnActualizar.setEnabled(false);
-         btnGuardar.setEnabled(false);       
+        btnGuardar.setEnabled(false);
     }
-    
-    private void desbloquear ()
-    {
+
+    private void desbloquear() {
         txtNumero.setEnabled(true);
         txtNumero.setText(String.valueOf(cargarNumero()));
         jdcFec_rea.setEnabled(true);
@@ -723,18 +723,17 @@ public void limpiar()
         cbCliente.setEnabled(true);
         cbCajero.setEnabled(true);
     }
-    private void desbloquearbotones()
-    {
+
+    private void desbloquearbotones() {
         btnActualizar.setEnabled(true);
         btnCancelar.setEnabled(true);
-        btnGuardar.setEnabled(true);       
+        btnGuardar.setEnabled(true);
     }
-    
-    private void desbloquearbotonesActualizar()
-    {
+
+    private void desbloquearbotonesActualizar() {
         btnNuevo.setEnabled(true);
         btnActualizar.setEnabled(true);
-        
+
     }
 
 }
