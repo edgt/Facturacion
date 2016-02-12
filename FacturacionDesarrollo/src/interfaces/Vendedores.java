@@ -67,7 +67,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
             Registros[1]=rs.getString("nom_ven");
             Registros[2]=rs.getString("ape_ven");
             Registros[3]=rs.getString("tel_ven");
-            Registros[4]=rs.getString("cod_prov");
+            Registros[4]=rs.getString("cod_prov_p");
             modelo.addRow(Registros);
             tblDatos.setModel(modelo);
         }
@@ -148,7 +148,7 @@ public class Vendedores extends javax.swing.JInternalFrame {
         sql="UPDATE VENDEDORES SET ape_ven='"+Apellido.getText().toUpperCase()+"', "
                             + "nom_ven='"+txtNombre.getText().toUpperCase()+"', "
                             + "tel_ven='"+txtTelefono.getText()+"', "
-                            + "cod_prov='"+VendedoresCodigo(cbProveedor.getSelectedItem().toString())+"' "
+                            + "cod_prov_p='"+VendedoresCodigo(cbProveedor.getSelectedItem().toString())+"' "
                 +"WHERE ci_ven='"+txtCodigo.getText()+"'";    
         try {
             PreparedStatement psd=(PreparedStatement) cn.prepareStatement(sql);     
